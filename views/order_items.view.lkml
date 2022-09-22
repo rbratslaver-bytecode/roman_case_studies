@@ -149,8 +149,50 @@ view: order_items {
     value_format_name: usd_0
   }
 
+  measure: number_items_returned {
+    description: "Number of items that were returned by dissatisfied customers"
+    type: count_distinct
+    sql: ${id} ;;
+    filters: [status: "Returned"]
+    value_format_name: decimal_0
+  }
+
+  measure: item_return_rate {
+    description: "Number of Items Returned / Total number of items sold"
+    type: number
+    sql: 1.0 * ${number_items_returned} / NULLIF(${count_order_items},0) ;;
+    value_format_name: percent_0
+  }
+
+  measure: unique_customers {
+    description: "Total unique customers"
+    type: count_distinct
+    sql: ${user_id} ;;
+    value_format_name: decimal_0
+  }
+
+  measure: number_of_customers_returning_items {
+    description: "Number of users who have returned an item at some point"
+    type: count_distinct
+    sql: ${user_id} ;;
+    filters: [status: "Returned"]
+    value_format_name: decimal_0
+  }
 
 
+  measure: perc_users_with_returns {
+    description: "Number of Customer Returning Items / total number of customers"
+    type: number
+    sql: 1.0 * ${number_of_customers_returning_items} / NULLIF(${unique_customers},0) ;;
+    value_format_name: percent_0
+  }
+
+  measure: avg_spend_per_customer {
+    description: "Total sale price / Total number of customers"
+    type: number
+    sql: 1.0 * ${total_sale_price} / NULLIF(${unique_customers},0) ;;
+    value_format_name: usd_0
+  }
 
 
 
