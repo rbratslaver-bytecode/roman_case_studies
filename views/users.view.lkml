@@ -115,8 +115,9 @@ view: users {
     sql: ${TABLE}.traffic_source ;;
   }
 
-  measure: count {
-    type: count
+  measure: distinct_users {
+    type: count_distinct
+    sql: ${id} ;;
     drill_fields: [id, last_name, first_name, events.count, order_items.count]
   }
 }

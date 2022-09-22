@@ -145,9 +145,10 @@ view: order_items {
     description: "Total revenue from completed sales (cancelled and returned orders excluded)"
     type: sum
     sql: ${sale_price} ;;
-    filters: [status: "Complete"]
+    filters: [status: "-Returned,-Cancelled"]
     value_format_name: usd_0
-  }
+    }
+
 
   measure: number_items_returned {
     description: "Number of items that were returned by dissatisfied customers"
@@ -193,7 +194,5 @@ view: order_items {
     sql: 1.0 * ${total_sale_price} / NULLIF(${unique_customers},0) ;;
     value_format_name: usd_0
   }
-
-
 
 }
