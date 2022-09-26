@@ -4,7 +4,7 @@ view: users {
   # to be used for all fields in this view.
   sql_table_name: `thelook.users`
     ;;
-  drill_fields: [id]
+  drill_fields: [users.id,users.age_tier,users.gender,users.city,users.state,users.country]
   # This primary key is the unique key for this table in the underlying database.
   # You need to define a primary key in a view in order to join to other views.
 
@@ -23,19 +23,14 @@ view: users {
     sql: ${TABLE}.age ;;
   }
 
-  # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
-  # measures for this dimension, but you can also add measures of many different aggregates.
-  # Click on the type parameter to see all the options in the Quick Help panel on the right.
-
-  measure: total_age {
-    type: sum
+  dimension: age_tier {
+    type: tier
     sql: ${age} ;;
+    tiers: [0,15,26,36,51,66]
+    style: integer
   }
 
-  measure: average_age {
-    type: average
-    sql: ${age} ;;
-  }
+
 
   dimension: city {
     type: string
@@ -63,6 +58,16 @@ view: users {
       year
     ]
     sql: ${TABLE}.created_at ;;
+  }
+
+  dimension: days_since_signup {
+    type: number
+    sql: date_diff(current_date(),date(${created_date}),DAY) ;;
+  }
+
+  dimension: is_new_user {
+    type: string
+    sql: CASE WHEN ${days_since_signup} <= 90 then "New User" ELSE "Existing User" END ;;
   }
 
   dimension: email {
@@ -95,6 +100,12 @@ view: users {
     sql: ${TABLE}.longitude ;;
   }
 
+  dimension: location {
+    type: location
+    sql_latitude: ${latitude} ;;
+    sql_longitude: ${longitude} ;;
+  }
+
   dimension: postal_code {
     type: string
     sql: ${TABLE}.postal_code ;;
@@ -115,9 +126,19 @@ view: users {
     sql: ${TABLE}.traffic_source ;;
   }
 
+  # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
+  # measures for this dimension, but you can also add measures of many different aggregates.
+  # Click on the type parameter to see all the options in the Quick Help panel on the right.
+
+
+
+  measure: average_age {
+    type: average
+    sql: ${age} ;;
+  }
+
   measure: distinct_users {
     type: count_distinct
     sql: ${id} ;;
-    drill_fields: [id, last_name, first_name, events.count, order_items.count]
   }
 }

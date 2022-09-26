@@ -40,8 +40,16 @@ explore: order_items {
     sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
   }
 
-  join: crossview_orders_inventory_items {
+  join: cv_orders_inventory_items {
   relationship: one_to_one
   sql:  ;;
   }
+
+  join: products {
+    type: left_outer
+    relationship:  many_to_one
+    sql_on: ${order_items.product_id} = ${products.id} ;;
+  }
+
+
 }

@@ -4,7 +4,7 @@ view: order_items {
   # to be used for all fields in this view.
   sql_table_name: `looker-partners.thelook.order_items`
     ;;
-  drill_fields: [id]
+  drill_fields: [users.id,users.age_tier,users.gender,users.city,users.state,users.country]
   # This primary key is the unique key for this table in the underlying database.
   # You need to define a primary key in a view in order to join to other views.
 
@@ -32,6 +32,7 @@ view: order_items {
       date,
       week,
       month,
+      month_name,
       quarter,
       year
     ]
@@ -147,6 +148,7 @@ view: order_items {
     sql: ${sale_price} ;;
     filters: [status: "-Returned,-Cancelled"]
     value_format_name: usd_0
+    drill_fields: [user_id,users.created_at,users.days_since_signup,users.is_new_user]
     }
 
 
