@@ -59,3 +59,6 @@ explore: order_items {
 
 
 }
+
+explore: ndt_user_order_facts {}
+explore: dt_user_order_facts {}

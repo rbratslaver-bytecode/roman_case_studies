@@ -111,14 +111,21 @@ view: order_items {
   }
 
 
+
+
   # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
   # measures for this dimension, but you can also add measures of many different aggregates.
   # Click on the type parameter to see all the options in the Quick Help panel on the right.
 
-  measure: count_order_items {
+  measure: distinct_order_items {
     type: count_distinct
     sql: ${id} ;;
     drill_fields: [id]
+  }
+
+  measure: distinct_orders  {
+    type: count_distinct
+    sql: ${order_id} ;;
   }
 
   measure: total_sale_price {
@@ -163,7 +170,7 @@ view: order_items {
   measure: item_return_rate {
     description: "Number of Items Returned / Total number of items sold"
     type: number
-    sql: 1.0 * ${number_items_returned} / NULLIF(${count_order_items},0) ;;
+    sql: 1.0 * ${number_items_returned} / NULLIF(${distinct_order_items},0) ;;
     value_format_name: percent_0
   }
 
@@ -196,5 +203,21 @@ view: order_items {
     sql: 1.0 * ${total_sale_price} / NULLIF(${unique_customers},0) ;;
     value_format_name: usd_0
   }
+
+  measure: first_order {
+    type: date
+    sql: MIN(${created_raw}) ;;
+  }
+
+  measure: latest_order {
+    type: date
+    sql: MAX(${created_raw}) ;;
+  }
+
+
+
+
+
+
 
 }

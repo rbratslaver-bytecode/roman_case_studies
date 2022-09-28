@@ -15,6 +15,9 @@ view: ndt_top_brands {
       derived_column: gross_revenue_all {
         sql: SUM(total_gross_revenue) OVER() ;;
       }
+      derived_column: gross_revenue_rank {
+        sql: DENSE_RANK() OVER(ORDER BY total_gross_revenue DESC) ;;
+      }
     }
   }
   dimension: brand {
@@ -37,6 +40,16 @@ view: ndt_top_brands {
   dimension: gross_revenue_all {
     type: number
   }
+  dimension: gross_revenue_rank {
+    type: number
+  }
+
+  measure: m_gross_margin_perc {
+    label: "Gross Margin %"
+    type: max
+    sql: ${gross_margin_perc} ;;
+    value_format_name: percent_0
+  }
 
   measure: m_total_gross_revenue {
     type: sum
@@ -54,7 +67,7 @@ view: ndt_top_brands {
     label: "% Of Total Revenue"
     type: number
     sql: ${m_total_gross_revenue} / ${m_gross_revenue_all} ;;
-    value_format_name: percent_4
+    value_format_name: percent_0
     drill_fields: [products.category,products.name,products.brand,products.department]
   }
 }
