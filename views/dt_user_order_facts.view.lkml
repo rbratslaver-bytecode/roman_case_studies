@@ -2,7 +2,7 @@ view: dt_user_order_facts {
   derived_table: {
     sql: select user_id,
       min(created_at) first_order,
-      max(created_at) latest_order,
+      max(created_at) last_order,
       sum(sale_price) lifetime_revenue,
       count(distinct order_id) lifetime_orders
 
@@ -27,9 +27,9 @@ view: dt_user_order_facts {
     sql: ${TABLE}.first_order ;;
   }
 
-  dimension_group: latest_order {
+  dimension_group: last_order {
     type: time
-    sql: ${TABLE}.latest_order ;;
+    sql: ${TABLE}.last_order ;;
   }
 
   dimension: lifetime_revenue {
@@ -80,7 +80,22 @@ view: dt_user_order_facts {
     }
   }
 
-  #--- measures
+  dimension: is_active_customer {
+    type: yesno
+    sql: ${last_order_date} >= current_date() - 90 ;;
+  }
+
+  dimension: days_since_last_order {
+    type: number
+    sql: date_diff(current_date(),${last_order_date},DAY) ;;
+  }
+
+  dimension: is_repeat_customer {
+    type: yesno
+    sql: ${lifetime_orders}>1 ;;
+  }
+
+  #---------------------------------------measures----------------------------------------------
 
   measure: total_lifetime_orders {
     type: sum
@@ -100,10 +115,21 @@ view: dt_user_order_facts {
     value_format_name: decimal_1
   }
 
+  measure: avg_lifetime_revenue {
+    type: average
+    sql: ${lifetime_revenue} ;;
+    value_format_name: usd_0
+  }
+
+  measure: avg_days_since_last_orders {
+    type: average
+    sql: ${days_since_last_order} ;;
+  }
+
 
 
 
   set: detail {
-    fields: [user_id, first_order_time, latest_order_time, lifetime_revenue, lifetime_orders]
+    fields: [user_id, first_order_time, last_order_time, lifetime_revenue, lifetime_orders]
   }
 }
