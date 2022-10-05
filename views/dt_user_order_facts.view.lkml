@@ -1,4 +1,5 @@
 view: dt_user_order_facts {
+  label: "User Order Facts"
   derived_table: {
     sql: select user_id,
       min(created_at) first_order,
@@ -12,12 +13,9 @@ view: dt_user_order_facts {
       ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: [detail*]
-  }
 
   dimension: user_id {
+    primary_key: yes
     type: number
     sql: ${TABLE}.user_id ;;
   }
@@ -115,6 +113,7 @@ view: dt_user_order_facts {
     value_format_name: decimal_1
   }
 
+
   measure: avg_lifetime_revenue {
     type: average
     sql: ${lifetime_revenue} ;;
@@ -125,6 +124,14 @@ view: dt_user_order_facts {
     type: average
     sql: ${days_since_last_order} ;;
   }
+
+  measure: lifetime_revenue_all {
+    type: number
+    sql: sum(${total_lifetime_revenue}) over() ;;
+    value_format_name: usd_0
+  }
+
+
 
 
 

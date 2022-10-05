@@ -4,11 +4,17 @@ view: order_items {
   # to be used for all fields in this view.
   sql_table_name: `looker-partners.thelook.order_items`
     ;;
-  drill_fields: [users.id,users.age_tier,users.gender,users.city,users.state,users.country]
+
+  set: detail {
+    fields: [order_items.id,order_items.order_id,users.id,created_date,users.age_tier,products.brand,products.category,
+      users.gender,users.city,users.state,users.country]
+  }
+  drill_fields: [detail*]
   # This primary key is the unique key for this table in the underlying database.
   # You need to define a primary key in a view in order to join to other views.
 
   dimension: id {
+    label: "Order Item ID"
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
@@ -63,6 +69,7 @@ view: order_items {
   }
 
   dimension: order_id {
+    label: "OrderID"
     type: number
     sql: ${TABLE}.order_id ;;
   }
@@ -120,7 +127,6 @@ view: order_items {
   measure: distinct_order_items {
     type: count_distinct
     sql: ${id} ;;
-    drill_fields: [id]
   }
 
   measure: distinct_orders  {
@@ -155,7 +161,7 @@ view: order_items {
     sql: ${sale_price} ;;
     filters: [status: "-Returned,-Cancelled"]
     value_format_name: usd_0
-    drill_fields: [user_id,users.created_at,users.days_since_signup,users.is_new_user]
+    # drill_fields: [user_id,users.created_at,users.days_since_signup,users.is_new_user]
     }
 
 
@@ -174,8 +180,8 @@ view: order_items {
     value_format_name: percent_0
   }
 
-  measure: unique_customers {
-    description: "Total unique customers"
+  measure: distinct_customers {
+    description: "Total distinct customers"
     type: count_distinct
     sql: ${user_id} ;;
     value_format_name: decimal_0
@@ -193,14 +199,15 @@ view: order_items {
   measure: perc_users_with_returns {
     description: "Number of Customer Returning Items / total number of customers"
     type: number
-    sql: 1.0 * ${number_of_customers_returning_items} / NULLIF(${unique_customers},0) ;;
+    sql: 1.0 * ${number_of_customers_returning_items} / NULLIF(${distinct_customers},0) ;;
     value_format_name: percent_0
   }
 
   measure: avg_spend_per_customer {
+    label: "Avg Customer Spend"
     description: "Total sale price / Total number of customers"
     type: number
-    sql: 1.0 * ${total_sale_price} / NULLIF(${unique_customers},0) ;;
+    sql: 1.0 * ${total_sale_price} / NULLIF(${distinct_customers},0) ;;
     value_format_name: usd_0
   }
 
@@ -213,6 +220,8 @@ view: order_items {
     type: date
     sql: MAX(${created_raw}) ;;
   }
+
+
 
 
 

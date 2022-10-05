@@ -26,12 +26,12 @@ view: products {
       url: "https://www.google.com/search?q={{value}}"
       icon_url: "https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
     }
-    link: {
-      label: "Facebook Search"
-      url: "https://www.facebook.com/search?q={{value}}"
-      icon_url: "https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg"
+    # link: {
+    #   label: "Facebook Search"
+    #   url: "https://www.facebook.com/search?q={{value}}"
+    #   icon_url: "https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg"
     }
-  }
+
 
   dimension: category {
     type: string

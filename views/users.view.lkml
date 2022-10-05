@@ -4,11 +4,17 @@ view: users {
   # to be used for all fields in this view.
   sql_table_name: `thelook.users`
     ;;
-  drill_fields: [users.id,users.age_tier,users.gender,users.city,users.state,users.country]
+
+  set: detail {
+    fields: [order_items.id,order_items.order_id,users.id,created_date,users.age_tier,products.brand,products.category,
+      users.gender,users.city,users.state,users.country]
+  }
+  drill_fields: [detail*]
   # This primary key is the unique key for this table in the underlying database.
   # You need to define a primary key in a view in order to join to other views.
 
   dimension: id {
+    label: "UserID"
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;

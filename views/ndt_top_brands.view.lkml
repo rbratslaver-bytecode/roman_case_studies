@@ -3,6 +3,14 @@
 # include: "roman_case_studies.model.lkml"
 
 view: ndt_top_brands {
+
+  set: detail {
+    fields: [order_items.id,order_items.order_id,users.id,order_items.created_date,users.age_tier,products.brand,products.category,
+      users.gender,users.city,users.state,users.country]
+  }
+
+  drill_fields: [detail*]
+
   label: "Top Brands"
   derived_table: {
     explore_source: order_items {

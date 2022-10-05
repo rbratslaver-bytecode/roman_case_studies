@@ -57,8 +57,11 @@ explore: order_items {
     sql_on: ${products.brand} = ${ndt_top_brands.brand} ;;
   }
 
+  join: dt_user_order_facts {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${order_items.user_id} = ${dt_user_order_facts.user_id} ;;
+  }
+
 
 }
-
-explore: ndt_user_order_facts {}
-explore: dt_user_order_facts {}
