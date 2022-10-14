@@ -51,12 +51,6 @@ explore: order_items {
     sql_on: ${order_items.product_id} = ${products.id} ;;
   }
 
-  join: ndt_top_brands {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${products.brand} = ${ndt_top_brands.brand} ;;
-  }
-
   join: dt_user_order_facts {
     type: left_outer
     relationship: many_to_one

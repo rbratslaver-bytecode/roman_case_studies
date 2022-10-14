@@ -66,14 +66,28 @@ view: users {
     sql: ${TABLE}.created_at ;;
   }
 
-  dimension: days_since_signup {
-    type: number
-    sql: date_diff(current_date(),date(${created_date}),DAY) ;;
+
+  dimension_group: signup_length {
+    type: duration
+    sql_start: ${created_raw} ;;
+    sql_end: current_timestamp();;
+    intervals: [day,month]
   }
+
+  dimension: signup_tier {
+    type: tier
+    sql: ${months_signup_length} ;;
+    tiers: [3,6,9,12]
+    style: integer
+  }
+
+
+
+
 
   dimension: is_new_user {
     type: string
-    sql: CASE WHEN ${days_since_signup} <= 90 then "New User" ELSE "Existing User" END ;;
+    sql: CASE WHEN ${days_signup_length}_signup_length} <= 90 then "New User" ELSE "Existing User" END ;;
   }
 
   dimension: email {
@@ -133,10 +147,11 @@ view: users {
     sql: ${TABLE}.traffic_source ;;
   }
 
+#################################measures#########################################################
+
   # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
   # measures for this dimension, but you can also add measures of many different aggregates.
   # Click on the type parameter to see all the options in the Quick Help panel on the right.
-
 
 
   measure: average_age {
@@ -147,5 +162,15 @@ view: users {
   measure: distinct_users {
     type: count_distinct
     sql: ${id} ;;
+  }
+
+  measure: avg_days_since_signup {
+    type: average
+    sql: ${days_signup_length} ;;
+  }
+
+  measure: avg_months_since_signup {
+    type: average
+    sql: ${months_signup_length} ;;
   }
 }
