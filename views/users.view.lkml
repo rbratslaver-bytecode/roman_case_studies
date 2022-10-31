@@ -87,7 +87,7 @@ view: users {
 
   dimension: is_new_user {
     type: string
-    sql: CASE WHEN ${days_signup_length}_signup_length} <= 90 then "New User" ELSE "Existing User" END ;;
+    sql: CASE WHEN ${days_signup_length} <= 90 then "New User" ELSE "Existing User" END ;;
   }
 
   dimension: email {
@@ -209,12 +209,12 @@ view: users {
 ############################refinement#################################################################
 
 
-view: +users {
+# view: +users {
 
-  measure: distinct_age {
-    type: count_distinct
-    sql:${users.age};;
-  }
-}
+#   measure: distinct_age {
+#     type: count_distinct
+#     sql:${users.age};;
+#   }
+# }
 
-explore: users {}
+# explore: users {}
