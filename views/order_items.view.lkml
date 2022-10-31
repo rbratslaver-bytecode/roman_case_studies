@@ -117,6 +117,30 @@ view: order_items {
     sql: ${TABLE}.user_id ;;
   }
 
+  dimension_group: return_after_first_order {
+    type: duration
+    sql_start: ${dt_user_order_facts.first_order_raw} ;;
+    sql_end: ${created_raw} ;;
+  }
+
+
+#########################################brand tmeplated filter###############################
+
+  filter: brand_filter {
+    type: string
+    suggest_dimension: products.brand
+  }
+
+  dimension: brand_comparison {
+    type: string
+    sql: case when {% condition brand_filter %} ${products.brand} {% endcondition %} then
+    ${products.brand} else "Other" end ;;
+  }
+
+###############################################################################################
+
+
+
 
 
 
@@ -220,12 +244,6 @@ view: order_items {
     type: date
     sql: MAX(${created_raw}) ;;
   }
-
-
-
-
-
-
 
 
 

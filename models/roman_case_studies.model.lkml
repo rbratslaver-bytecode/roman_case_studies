@@ -1,5 +1,6 @@
 # Define the database connection to be used for this model.
 connection: "looker_partner_demo"
+case_sensitive: no
 
 # include all the views
 include: "/views/**/*.view"
@@ -21,9 +22,9 @@ persist_with: roman_case_studies_default_datagroup
 
 # To see the Explore you’re building, navigate to the Explore menu and select an Explore under "Roman Case Studies"
 
-explore: users {
-  label: "Customers"
-}
+# explore: users {
+#   label: "Customers"
+# }
 
 
 explore: order_items {
@@ -57,5 +58,9 @@ explore: order_items {
     sql_on: ${order_items.user_id} = ${dt_user_order_facts.user_id} ;;
   }
 
-
+  join: brand_rankings {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${products.brand} = ${brand_rankings.brand} ;;
+  }
 }

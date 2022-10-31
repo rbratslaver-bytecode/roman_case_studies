@@ -147,6 +147,36 @@ view: users {
     sql: ${TABLE}.traffic_source ;;
   }
 
+
+###################################geo parameter############################################
+  parameter: select_geo_level {
+    type: string
+    allowed_value: {
+      value: "city"
+    }
+    allowed_value: {
+      value: "state"
+    }
+    allowed_value: {
+      value: "country"
+    }
+  }
+
+
+  dimension: geo_level  {
+    type: string
+    sql: case when {% parameter select_geo_level %} = "city" then ${city}
+    when {% parameter select_geo_level %} = "state" then ${state}
+    when {% parameter select_geo_level %} = "country" then ${country}
+    end;;
+  }
+
+#################################################################################################
+
+
+
+
+
 #################################measures#########################################################
 
   # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
@@ -174,3 +204,17 @@ view: users {
     sql: ${months_signup_length} ;;
   }
 }
+
+
+############################refinement#################################################################
+
+
+view: +users {
+
+  measure: distinct_age {
+    type: count_distinct
+    sql:${users.age};;
+  }
+}
+
+explore: users {}

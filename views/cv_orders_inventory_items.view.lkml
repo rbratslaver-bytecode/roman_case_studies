@@ -31,4 +31,6 @@ view: cv_orders_inventory_items {
     sql: 1.0 * ${total_gross_margin_amount} / NULLIF(${order_items.total_gross_revenue},0);;
     value_format_name: percent_0
   }
+
+
  }

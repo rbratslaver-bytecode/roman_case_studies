@@ -22,6 +22,7 @@ view: dt_user_order_facts {
 
   dimension_group: first_order {
     type: time
+    timeframes: [month,raw]
     sql: ${TABLE}.first_order ;;
   }
 
@@ -137,6 +138,6 @@ view: dt_user_order_facts {
 
 
   set: detail {
-    fields: [user_id, first_order_time, last_order_time, lifetime_revenue, lifetime_orders]
+    fields: [user_id, first_order_raw, last_order_time, lifetime_revenue, lifetime_orders]
   }
 }
