@@ -148,7 +148,7 @@ view: users {
   }
 
 
-###################################geo parameter############################################
+###################################dynamic dimension############################################
   parameter: select_geo_level {
     type: string
     allowed_value: {

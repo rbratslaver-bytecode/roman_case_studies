@@ -29,6 +29,8 @@ persist_with: roman_case_studies_default_datagroup
 
 explore: order_items {
 
+  # cancel_grouping_fields: [order_items.order_sequence]
+
   join: users {
     type: full_outer
     relationship: many_to_one

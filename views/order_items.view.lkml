@@ -74,6 +74,13 @@ view: order_items {
     sql: ${TABLE}.order_id ;;
   }
 
+  dimension: order_sequence {
+    type: number
+    sql: dense_rank() over(partition by user_id order by ${created_raw}) ;;
+  }
+
+
+
   dimension: product_id {
     type: number
     sql: ${TABLE}.product_id ;;
