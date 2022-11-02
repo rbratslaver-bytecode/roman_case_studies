@@ -8,7 +8,10 @@ FROM order_items
 LEFT JOIN products ON order_items.product_id = products.id
 GROUP BY 1
 order by 2 desc ;;
-  }
+
+datagroup_trigger: refresh
+}
+
 
 
 
