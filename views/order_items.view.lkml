@@ -1,3 +1,5 @@
+# Hi Roman I made a change to the file but only as a commit!
+
 # The name of this view in Looker is "Order Items"
 view: order_items {
   # The sql_table_name parameter indicates the underlying database table
