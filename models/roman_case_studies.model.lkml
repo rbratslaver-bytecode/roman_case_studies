@@ -13,30 +13,48 @@ datagroup: roman_case_studies_default_datagroup {
   max_cache_age: "1 hour"
 }
 
-persist_with: roman_case_studies_default_datagroup
 
 datagroup: refresh {
-  sql_trigger: SELECT current_timestamp() ;;
+  sql_trigger: SELECT current_date() ;;
   max_cache_age: "24 hours"
   description: "Triggered when new ID is added to order_items"
 }
 
 
-# Explores allow you to join together different views (database tables) based on the
-# relationships between fields. By joining a view into an Explore, you make those
-# fields available to users for data analysis.
-# Explores should be purpose-built for specific use cases.
+persist_with: roman_case_studies_default_datagroup
 
-# To see the Explore you’re building, navigate to the Explore menu and select an Explore under "Roman Case Studies"
 
-# explore: users {
-#   label: "Customers"
-# }
+access_grant: my_test {
+  user_attribute: can_see_sensitive_data
+  allowed_values: ["yes"]
+}
+
+
+
 
 
 explore: order_items {
 
-  # cancel_grouping_fields: [order_items.order_sequence]
+  # access_filter: {
+  #   field: order_items.user_id
+  #   user_attribute: order_user_id
+  # }
+
+
+  # always_filter: {
+  #   filters: [order_items.status: "Complete"]
+  # }
+
+  # sql_always_where: ${status} = "Complete" ;;
+
+  # sql_always_having: ${products.count}>=300 ;;
+
+# conditionally_filter: {
+#   filters: [order_items.status: "Complete"]
+#   unless: [created_date]
+# }
+
+
 
   join: users {
     type: full_outer

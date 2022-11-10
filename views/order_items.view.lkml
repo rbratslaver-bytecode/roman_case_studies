@@ -10,8 +10,7 @@ view: order_items {
       users.gender,users.city,users.state,users.country]
   }
   drill_fields: [detail*]
-  # This primary key is the unique key for this table in the underlying database.
-  # You need to define a primary key in a view in order to join to other views.
+
 
   dimension: id {
     label: "Order Item ID"
@@ -24,6 +23,27 @@ view: order_items {
     type: string
     sql: ${TABLE}.status ;;
   }
+
+
+  dimension: is_complete {
+    type: yesno
+    sql: ${status} = "Complete" ;;
+  }
+
+  measure: complete_rev {
+    type: sum
+    sql: ${sale_price};;
+    filters: [is_complete: "yes"]
+    value_format_name: usd
+  }
+
+
+
+
+
+  ## instead of creating separate measures for each status type, what's a better way?
+
+
 
 
 
@@ -46,6 +66,7 @@ view: order_items {
   }
 
   dimension_group: delivered {
+    required_access_grants: [my_test]
     type: time
     timeframes: [
       raw,
@@ -143,6 +164,9 @@ view: order_items {
     sql: case when {% condition brand_filter %} ${products.brand} {% endcondition %} then
     ${products.brand} else "Other" end ;;
   }
+
+
+
 
 ###############################################################################################
 
@@ -250,6 +274,12 @@ view: order_items {
   measure: latest_order {
     type: date
     sql: MAX(${created_raw}) ;;
+  }
+
+  measure: revperuser {
+    type: number
+    sql: ${total_sale_price} / ${distinct_customers} ;;
+    value_format_name: usd
   }
 
 
