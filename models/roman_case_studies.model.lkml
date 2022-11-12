@@ -73,3 +73,5 @@ explore: order_items {
     sql_on: ${products.brand} = ${brand_rankings.brand} ;;
   }
 }
+
+explore: users {}

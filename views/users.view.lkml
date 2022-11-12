@@ -137,6 +137,7 @@ view: users {
     sql: ${TABLE}.state ;;
   }
 
+
   dimension: street_address {
     type: string
     sql: ${TABLE}.street_address ;;
@@ -146,6 +147,7 @@ view: users {
     type: string
     sql: ${TABLE}.traffic_source ;;
   }
+
 
 
 ###################################dynamic dimension############################################
