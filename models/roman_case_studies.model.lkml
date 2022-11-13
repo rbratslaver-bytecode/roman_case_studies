@@ -35,7 +35,6 @@ datagroup: refresh {
 
 
 explore: order_items {
-
   # cancel_grouping_fields: [order_items.order_sequence]
 
   join: users {

@@ -20,6 +20,8 @@ view: order_items {
     sql: ${TABLE}.id ;;
   }
 
+
+
   dimension: status {
     type: string
     sql: ${TABLE}.status ;;
