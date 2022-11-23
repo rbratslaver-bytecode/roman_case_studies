@@ -2,8 +2,7 @@
 view: users {
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
-  sql_table_name: `thelook.users`
-    ;;
+  sql_table_name: `thelook.users`;;
 
   set: detail {
     fields: [order_items.id,order_items.order_id,users.id,created_date,users.age_tier,products.brand,products.category,
@@ -29,13 +28,14 @@ view: users {
     sql: ${TABLE}.age ;;
   }
 
+
+
   dimension: age_tier {
     type: tier
     sql: ${age} ;;
     tiers: [0,15,26,36,51,66]
     style: integer
   }
-
 
 
   dimension: city {
@@ -83,8 +83,6 @@ view: users {
 
 
 
-
-
   dimension: is_new_user {
     type: string
     sql: CASE WHEN ${days_signup_length} <= 90 then "New User" ELSE "Existing User" END ;;
@@ -100,15 +98,17 @@ view: users {
     sql: ${TABLE}.first_name ;;
   }
 
+  dimension: last_name {
+    type: string
+    sql: ${TABLE}.last_name ;;
+  }
+
   dimension: gender {
     type: string
     sql: ${TABLE}.gender ;;
   }
 
-  dimension: last_name {
-    type: string
-    sql: ${TABLE}.last_name ;;
-  }
+
 
   dimension: latitude {
     type: number
@@ -196,6 +196,8 @@ view: users {
     sql: ${id} ;;
   }
 
+
+
   measure: avg_days_since_signup {
     type: average
     sql: ${days_signup_length} ;;
@@ -205,6 +207,13 @@ view: users {
     type: average
     sql: ${months_signup_length} ;;
   }
+
+  measure: count {
+    type: count
+  }
+
+
+
 }
 
 
@@ -212,11 +221,10 @@ view: users {
 
 
 # view: +users {
-
-#   measure: distinct_age {
-#     type: count_distinct
-#     sql:${users.age};;
+#   measure: max_age {
+#     type: max
+#     sql: ${age} ;;
 #   }
 # }
 
-# explore: users {}
+#####################################################################################################

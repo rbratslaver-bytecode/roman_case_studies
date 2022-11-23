@@ -86,5 +86,3 @@ view: user_order_patterns {
       value_format_name: percent_2
     }
   }
-
-explore: user_order_patterns {}

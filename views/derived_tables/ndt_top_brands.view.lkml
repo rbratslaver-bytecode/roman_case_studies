@@ -2,6 +2,8 @@
 
 # include: "roman_case_studies.model.lkml"
 
+# include: "/explores/*"
+
 view: ndt_top_brands {
 
   set: detail {
@@ -79,3 +81,5 @@ view: ndt_top_brands {
     drill_fields: [products.category,products.name,products.brand,products.department]
   }
 }
+
+# explore: ndt_top_brands {}

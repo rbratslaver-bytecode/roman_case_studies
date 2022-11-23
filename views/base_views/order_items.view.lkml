@@ -1,4 +1,5 @@
 # The name of this view in Looker is "Order Items"
+
 view: order_items {
   # The sql_table_name parameter indicates the underlying database table
   # to be used for all fields in this view.
@@ -6,7 +7,7 @@ view: order_items {
     ;;
 
   set: detail {
-    fields: [order_items.id,order_items.order_id,users.id,created_date,users.age_tier,products.brand,products.category,
+    fields: [users.created_month,order_items.created_month,days_return_after_user_created,order_items.id,order_items.order_id,users.id,users.age_tier,products.brand,products.category,
       users.gender,users.city,users.state,users.country]
   }
   drill_fields: [detail*]
@@ -132,6 +133,12 @@ view: order_items {
     sql_end: ${created_raw} ;;
   }
 
+  dimension_group: return_after_user_created {
+    type: duration
+    sql_start: ${users.created_raw};;
+    sql_end: ${created_raw};;
+  }
+
 
 #########################################brand tmeplated filter###############################
 
@@ -253,6 +260,9 @@ view: order_items {
     type: date
     sql: MAX(${created_raw}) ;;
   }
+
+
+
 
 
 

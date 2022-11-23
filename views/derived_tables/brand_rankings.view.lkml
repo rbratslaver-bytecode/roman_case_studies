@@ -46,6 +46,3 @@ datagroup_trigger: refresh
     sql: CASE WHEN ${rank} = 'Other' THEN 'Other' ELSE ${rank} || '-' || ${brand} END;;
   }
 }
-
-
-explore: brand_rankings {}

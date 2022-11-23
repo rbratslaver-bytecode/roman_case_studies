@@ -1,6 +1,8 @@
+
 view: dt_user_order_facts {
   label: "User Order Facts"
   derived_table: {
+    datagroup_trigger: refresh
     sql: select user_id,
       min(created_at) first_order,
       max(created_at) last_order,
@@ -11,6 +13,10 @@ view: dt_user_order_facts {
 
       group by 1
       ;;
+  }
+
+  measure: users {
+    type: count
   }
 
 
