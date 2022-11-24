@@ -157,6 +157,34 @@ view: order_items {
 
 
 
+parameter: measure_selector {
+  type: unquoted
+  default_value: "total_sale_price"
+  allowed_value: {
+    value: "distinct_customers"
+    label: "customers"
+  }
+  allowed_value: {
+    value: "total_sale_price"
+    label: "revenue"
+  }
+}
+
+measure: dynamic_measure {
+  label_from_parameter: measure_selector
+  type: number
+  sql:
+    {%if measure_selector._parameter_value == "distinct_customers"%} ${distinct_customers}
+    {%else%} ${total_sale_price}
+    {%endif%};;
+
+  html:
+  {% if measure_selector._parameter_value == "distinct_customers" %} {{ distinct_customers._rendered_value }}
+  {% else %} {{ total_sale_price._rendered_value }}
+  {% endif %} ;;
+}
+
+
 
 
 
@@ -261,6 +289,9 @@ view: order_items {
     sql: MAX(${created_raw}) ;;
   }
 
+  measure: count {
+    type: count
+  }
 
 
 

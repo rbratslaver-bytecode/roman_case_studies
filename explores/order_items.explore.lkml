@@ -33,4 +33,12 @@ explore: order_items {
   sql_on: ${order_items.user_id} = ${dt_user_order_facts.user_id} ;;
   relationship: many_to_one
   }
+
+  join: ndt_top_ranking {
+    view_label: "ranking view"
+    type: left_outer
+    sql_on: ${products.brand} = ${ndt_top_ranking.brand} ;;
+    relationship: many_to_one
+  }
+
 }
