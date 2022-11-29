@@ -192,7 +192,7 @@ view: users {
     sql: ${age} ;;
   }
 
-  measure: new_distinct_users_measure {
+  measure: distinct_users {
     type: count_distinct
     sql: ${id} ;;
   }
