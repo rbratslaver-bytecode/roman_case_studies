@@ -103,6 +103,13 @@ view: users {
     sql: ${TABLE}.last_name ;;
   }
 
+  dimension: full_name {
+    type: string
+    sql: ${first_name} || ' '  || ${last_name} ;;
+  }
+
+
+
   dimension: gender {
     type: string
     sql: ${TABLE}.gender ;;
@@ -152,7 +159,7 @@ view: users {
 
 ###################################dynamic dimension############################################
   parameter: select_geo_level {
-    type: string
+    type: unquoted
     allowed_value: {
       value: "city"
     }
@@ -167,16 +174,10 @@ view: users {
 
   dimension: geo_level  {
     type: string
-    sql: case when {% parameter select_geo_level %} = "city" then ${city}
-    when {% parameter select_geo_level %} = "state" then ${state}
-    when {% parameter select_geo_level %} = "country" then ${country}
-    end;;
+    sql: ${TABLE}.{%parameter select_geo_level%};;
   }
 
 #################################################################################################
-
-
-
 
 
 #################################measures#########################################################
@@ -191,10 +192,11 @@ view: users {
     sql: ${age} ;;
   }
 
-  measure: distinct_users {
+  measure: new_distinct_users_measure {
     type: count_distinct
     sql: ${id} ;;
   }
+
 
 
 
