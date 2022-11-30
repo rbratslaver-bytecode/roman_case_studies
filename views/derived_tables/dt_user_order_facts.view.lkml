@@ -15,10 +15,6 @@ view: dt_user_order_facts {
       ;;
   }
 
-  measure: users {
-    type: count
-  }
-
 
   dimension: user_id {
     primary_key: yes
