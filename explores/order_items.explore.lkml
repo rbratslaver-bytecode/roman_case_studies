@@ -34,10 +34,17 @@ explore: order_items {
   relationship: many_to_one
   }
 
-  join: ndt_top_ranking {
-    view_label: "ranking view"
+  # join: ndt_top_ranking {
+  #   view_label: "Brand/Category Ranking"
+  #   type: left_outer
+  #   sql_on: ${products.brand} = ${ndt_top_ranking.brand} ;;
+  #   relationship: many_to_one
+  # }
+
+  join: product_comparison {
     type: left_outer
-    sql_on: ${products.brand} = ${ndt_top_ranking.brand} ;;
+    sql_on: ${products.category} = ${product_comparison.category} and
+    ${products.brand} = ${product_comparison.brand};;
     relationship: many_to_one
   }
 
